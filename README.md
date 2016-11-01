@@ -17,5 +17,4 @@ Implement following new features:
 <br>    3) Eviction policy for read misses and writes (write-through)
 <br>    4) No-Write Allocate policy for write misses
 
-####
-Check README file for more details.
+####Check README file for more details.
