@@ -1,0 +1,87 @@
+﻿Cache Simulator Assignment - Part 2
+--------------------------
+This assignment is extension of first cache simulator assignment. In this second
+part of the assignment you will implement following new features:
+    1) Memory hierarchy (Two cache levels: L1 and L2, and a main memory)
+    2) Cache timing statistics 
+    3) Eviction policy for read misses and writes (write-through)
+    4) No-Write Allocate policy for write misses
+    
+Following are the default parameters of the memory system:
+
+L1 Cache:
+	Cache Size: 64KB
+	Associativity : 4
+	Block Size : 32 bytes
+	Hit time = 1ns
+L2 Cache:
+	Cache Size: 128KB
+	Associativity : 16
+	Block Size : 32 bytes
+	Hit time = 15ns
+Main Memory:
+	Size : 1MB
+	Access time = 70ns
+
+Following files will be provided for the assignment:
+1) Memory foot print: This file will have the data worth 1MB in chunks of
+32-bit words.
+2) Two sample input and output files. Input file will have memory access
+commands, address and data. Output file will be extended to include average
+memory access time, best case and worst case memory access time.
+
+Memory Hierarchy:
+	You can create L1 and L2 caches by creating two instances of the base cache that 
+you designed in the first part of the assignment. 
+
+Cache Timing Model:
+	You need to extend the base cache to include hit latency of cache. 
+You also need to add methods to compute access time statistics. One way to 
+implement the timing model is to keep track of access time at each level, 
+accumulate in the end and return to the processor. The processor can accumulate 
+the access time across all requests and compute average memory access time, 
+best case memory access time and worst case memory access time in the end 
+of the simulation.  
+
+Eviction And Allocation Policy:
+	You will be implementing write-through eviction policy, and No-Write allocate policy for
+write misses. With write-through, No-Write allocate policies, here is how read/write 
+hits/misses should be handled:
+	1) Read hit results in no eviction/allocation
+	2) Read misses 
+		a) Read the new block from lower levels into LRU cache line (or
+		empty line if available).
+	3) Write hits write data to all levels of caches and to main memory.
+	4) Write misses
+		a) Write the data to lower cache levels and main memory.
+
+We are assuming that write buffer size is big enough that processor never stalls
+for writes. Therefore, AMAT calculation should not include write hit/miss stats.
+
+During the initialization, you need to create caches, clear them and also 
+initialize your main memory with the memory foot print. Your main memory can 
+just be an array that holds 32-bit data. While reading main memory, you need to
+compute right index into this array and read/write entire cache block size.
+
+Command to run the simulator for default parameters should be:
+	./cacheSim 65536 4 32 131072 16 32 input1.txt
+Above command has L1 cache parameters (size, associativity, block size) followed
+by L2 cache parameters.
+
+Assumptions:
+1. Writes and reads are always 32bits long.
+2. Block Size is always multiple of 4 bytes.
+3. Read and Write addresses are 32bit aligned. This removes the necessity to
+check for any partial data availability.
+4. If cache has no accesses, its hit and miss rates are printed as "0%".
+5. All outputs are expected to be rounded unsigned integers (and not as doubles).
+
+Expectations:
+1. Your code should compile with the Makefile provided in assignment 1. 
+2. If you add any additional source files, please add those to the Makefile and
+don't forget to commit your Makefile.
+3. No source code is provided for this assignment, as it builds on first part of
+the assignment that you have coded already.
+4. Output of your program should match exactly with sample outputs provided.
+Sample outputs are generated for above cache/mem specifications. To make sure
+your program output matches the expected output run 'diff'. 
